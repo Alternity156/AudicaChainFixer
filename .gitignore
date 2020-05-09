@@ -1,0 +1,6 @@
+
+*.CopyComplete
+*.cache
+ChainFixer/obj/Release/ChainFixer.csproj.FileListAbsolute.txt
+*.dll
+*.pdb
