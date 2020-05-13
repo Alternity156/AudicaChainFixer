@@ -356,7 +356,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Encoder.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Util\SimpleJSON.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MelonLoader.ModHandler\MelonLoader.ModHandler.csproj">
