@@ -12,7 +12,7 @@ namespace ChainFixer
         public const string Name = "ChainFixer"; // Name of the Mod.  (MUST BE SET)
         public const string Author = "Alternity"; // Author of the Mod.  (Set as null if none)
         public const string Company = null; // Company that made the Mod.  (Set as null if none)
-        public const string Version = "1.0.0"; // Version of the Mod.  (MUST BE SET)
+        public const string Version = "1.1.1"; // Version of the Mod.  (MUST BE SET)
         public const string DownloadLink = null; // Download Link for the Mod.  (Set as null if none)
     }
 
@@ -72,8 +72,8 @@ namespace ChainFixer
 
                 if (config.handColor)
                 {
-                    rightColor = PlayerPreferences.I.GunColorRight.Get();
-                    leftColor = PlayerPreferences.I.GunColorLeft.Get();
+                    rightColor = PlayerPreferences.I.GunColorRight.Get()/2;
+                    leftColor = PlayerPreferences.I.GunColorLeft.Get()/2;
                 }
                 else
                 {
@@ -208,17 +208,6 @@ namespace ChainFixer
 
                 //Updating state
                 oldMenuState = menuState;
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Target[] targets = UnityEngine.GameObject.FindObjectsOfType<Target>();
-
-                for (int i = 0; i < targets.Length; i++)
-                {
-                    targets[i].chainLine.startColor = new Color(1, 1, 1, 1);
-                    targets[i].chainLine.endColor = new Color(1, 1, 1, 1);
-                }
             }
         }
 
