@@ -60,96 +60,96 @@ namespace ChainFixer
 
 
 
-        [HarmonyPatch(typeof(TargetSpawner), "SpawnCue", new Type[] { typeof(SongCues.Cue) })]
-        private static class SpawnCue
-        {
-            private static void Prefix(TargetSpawner __instance, SongCues.Cue cue)
-            {
-                if (cue.behavior == Target.TargetBehavior.ChainStart)
-                {
-                    TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                    {
-                    c
-                    });
-                    if (cue.handType == Target.TargetHandType.Either)
-                    {
-                        ChainFixer.chainStartEither = true;
-                    }
-                    else if (cue.handType == Target.TargetHandType.Right)
-                    {
-                        ChainFixer.chainStartRight = true;
-                    }
-                    else if (cue.handType == Target.TargetHandType.Left)
-                    {
-                        ChainFixer.chainStartLeft = true;
-                    }
-                    else if (cue.handType == Target.TargetHandType.None)
-                    {
-                        ChainFixer.chainStartNone = true;
-                    }
-                }
-                else if (cue.behavior == Target.TargetBehavior.Chain)
-                {
-                    void SpawnTarget()
-                    {
-                        TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                        {
-                        c
-                        });
-                    }
-                    if (cue.handType == Target.TargetHandType.Either)
-                    {
-                        if (ChainFixer.chainStartEither)
-                        {
-                            SpawnTarget();
-                        }
-                    }
-                    else if (cue.handType == Target.TargetHandType.Right)
-                    {
-                        if (ChainFixer.chainStartRight)
-                        {
-                            SpawnTarget();
-                        }
-                    }
-                    else if (cue.handType == Target.TargetHandType.Left)
-                    {
-                        if (ChainFixer.chainStartLeft)
-                        {
-                            SpawnTarget();
-                        }
-                    }
-                    else if (cue.handType == Target.TargetHandType.None)
-                    {
-                        if (ChainFixer.chainStartNone)
-                        {
-                            SpawnTarget();
-                        }
-                    }
-                }
-                else
-                {
-                    TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                    {
-                    c
-                    });
-                    if (cue.handType == Target.TargetHandType.Either)
-                    {
-                        ChainFixer.chainStartEither = false;
-                    }
-                    else if (cue.handType == Target.TargetHandType.Right)
-                    {
-                        ChainFixer.chainStartRight = false;
-                    }
-                    else if (cue.handType == Target.TargetHandType.Left)
-                    {
-                        ChainFixer.chainStartLeft = false;
-                    }
-                    else if (cue.handType == Target.TargetHandType.None)
-                    {
-                        ChainFixer.chainStartNone = false;
-                    }
-                }
-            }
-        }
+        //[HarmonyPatch(typeof(TargetSpawner), "SpawnCue", new Type[] { typeof(SongCues.Cue) })]
+        //private static class SpawnCue
+        //{
+        //    private static void Prefix(TargetSpawner __instance, SongCues.Cue cue)
+        //    {
+        //        if (cue.behavior == Target.TargetBehavior.ChainStart)
+        //        {
+        //            TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
+        //            {
+        //            c
+        //            });
+        //            if (cue.handType == Target.TargetHandType.Either)
+        //            {
+        //                ChainFixer.chainStartEither = true;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Right)
+        //            {
+        //                ChainFixer.chainStartRight = true;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Left)
+        //            {
+        //                ChainFixer.chainStartLeft = true;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.None)
+        //            {
+        //                ChainFixer.chainStartNone = true;
+        //            }
+        //        }
+        //        else if (cue.behavior == Target.TargetBehavior.Chain)
+        //        {
+        //            void SpawnTarget()
+        //            {
+        //                TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
+        //                {
+        //                c
+        //                });
+        //            }
+        //            if (cue.handType == Target.TargetHandType.Either)
+        //            {
+        //                if (ChainFixer.chainStartEither)
+        //                {
+        //                    SpawnTarget();
+        //                }
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Right)
+        //            {
+        //                if (ChainFixer.chainStartRight)
+        //                {
+        //                    SpawnTarget();
+        //                }
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Left)
+        //            {
+        //                if (ChainFixer.chainStartLeft)
+        //                {
+        //                    SpawnTarget();
+        //                }
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.None)
+        //            {
+        //                if (ChainFixer.chainStartNone)
+        //                {
+        //                    SpawnTarget();
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
+        //            {
+        //            c
+        //            });
+        //            if (cue.handType == Target.TargetHandType.Either)
+        //            {
+        //                ChainFixer.chainStartEither = false;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Right)
+        //            {
+        //                ChainFixer.chainStartRight = false;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.Left)
+        //            {
+        //                ChainFixer.chainStartLeft = false;
+        //            }
+        //            else if (cue.handType == Target.TargetHandType.None)
+        //            {
+        //                ChainFixer.chainStartNone = false;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

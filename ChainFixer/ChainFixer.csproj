@@ -27,6 +27,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Encoder.cs" />
+    <Compile Include="Hooks.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Util\SimpleJSON.cs" />
@@ -74,6 +75,12 @@
     <Reference Include="SteamVR">
       <HintPath>lib\SteamVR.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="TwitchChatter">
       <HintPath>lib\TwitchChatter.dll</HintPath>
     </Reference>

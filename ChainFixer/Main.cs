@@ -16,9 +16,6 @@ namespace ChainFixer
 
     public class ChainFixer : MelonMod
     {
-        public static Patch TargetSpawner_SpawnCue;
-        public static Patch Target_OnCreated;
-
         public static Config config = new Config();
 
         //The current way of tracking menu state.
