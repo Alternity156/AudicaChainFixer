@@ -4,3 +4,5 @@
 ChainFixer/obj/Release/ChainFixer.csproj.FileListAbsolute.txt
 *.dll
 *.pdb
+
+ChainFixer/obj/Release/build.force

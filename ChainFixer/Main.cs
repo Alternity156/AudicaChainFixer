@@ -1,10 +1,8 @@
 ﻿using MelonLoader;
-using NET_SDK.Harmony;
-using NET_SDK;
 using System;
 using System.IO;
 using UnityEngine;
-
+using Harmony;
 namespace ChainFixer
 {
     public static class BuildInfo
@@ -12,7 +10,7 @@ namespace ChainFixer
         public const string Name = "ChainFixer"; // Name of the Mod.  (MUST BE SET)
         public const string Author = "Alternity"; // Author of the Mod.  (Set as null if none)
         public const string Company = null; // Company that made the Mod.  (Set as null if none)
-        public const string Version = "1.1.1"; // Version of the Mod.  (MUST BE SET)
+        public const string Version = "1.1.2"; // Version of the Mod.  (MUST BE SET)
         public const string DownloadLink = null; // Download Link for the Mod.  (Set as null if none)
     }
 
@@ -48,145 +46,8 @@ namespace ChainFixer
         public override void OnApplicationStart()
         {
             LoadConfig();
-
-            Instance instance = Manager.CreateInstance("ChainFixer");
-
-            TargetSpawner_SpawnCue = instance.Patch(SDK.GetClass("TargetSpawner").GetMethod("SpawnCue"), typeof(ChainFixer).GetMethod("SpawnCue"));
-            Target_OnCreated = instance.Patch(SDK.GetClass("Target").GetMethod("OnCreated"), typeof(ChainFixer).GetMethod("OnCreated"));
-        }
-
-        public static unsafe void OnCreated(IntPtr @this, Target.TargetBehavior behavior, Target.TargetHandType handType)
-        {
-            Target_OnCreated.InvokeOriginal(@this, new IntPtr[]
-            {
-                new IntPtr((void*)(&behavior)),
-                new IntPtr((void*)(&handType))
-            });
-
-            if (behavior == Target.TargetBehavior.Chain)
-            {
-                Target target = new Target(@this);
-
-                Color rightColor;
-                Color leftColor;
-
-                if (config.handColor)
-                {
-                    rightColor = PlayerPreferences.I.GunColorRight.Get()/2;
-                    leftColor = PlayerPreferences.I.GunColorLeft.Get()/2;
-                }
-                else
-                {
-                    rightColor = new Color(config.rightR, config.rightG, config.rightB);
-                    leftColor = new Color(config.leftR, config.leftG, config.leftB);
-                }
-
-                if (handType == Target.TargetHandType.Right)
-                {
-                    target.chainLine.startColor = rightColor;
-                    target.chainLine.endColor = rightColor;
-                }
-                else if (handType == Target.TargetHandType.Left)
-                {
-                    target.chainLine.startColor = leftColor;
-                    target.chainLine.endColor = leftColor;
-                }
-                else
-                {
-                    target.chainLine.startColor = KataConfig.I.eitherHandColor;
-                    target.chainLine.endColor = KataConfig.I.eitherHandColor;
-                }
-            }
-        }
-
-        public static unsafe void SpawnCue(IntPtr @this, IntPtr c)
-        {
-            SongCues.Cue cue = new SongCues.Cue(c);
-
-            if (cue.behavior == Target.TargetBehavior.ChainStart)
-            {
-                TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                {
-                    c
-                });
-                if (cue.handType == Target.TargetHandType.Either)
-                {
-                    chainStartEither = true;
-                }
-                else if (cue.handType == Target.TargetHandType.Right)
-                {
-                    chainStartRight = true;
-                }
-                else if (cue.handType == Target.TargetHandType.Left)
-                {
-                    chainStartLeft = true;
-                }
-                else if (cue.handType == Target.TargetHandType.None)
-                {
-                    chainStartNone = true;
-                }
-            }
-            else if (cue.behavior == Target.TargetBehavior.Chain)
-            {
-                void SpawnTarget()
-                {
-                    TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                    {
-                        c
-                    });
-                }
-                if (cue.handType == Target.TargetHandType.Either)
-                {
-                    if (chainStartEither)
-                    {
-                        SpawnTarget();
-                    }
-                }
-                else if (cue.handType == Target.TargetHandType.Right)
-                {
-                    if (chainStartRight)
-                    {
-                        SpawnTarget();
-                    }
-                }
-                else if (cue.handType == Target.TargetHandType.Left)
-                {
-                    if (chainStartLeft)
-                    {
-                        SpawnTarget();
-                    }
-                }
-                else if (cue.handType == Target.TargetHandType.None)
-                {
-                    if (chainStartNone)
-                    {
-                        SpawnTarget();
-                    }
-                }
-            }
-            else
-            {
-                TargetSpawner_SpawnCue.InvokeOriginal(@this, new IntPtr[]
-                {
-                    c
-                });
-                if (cue.handType == Target.TargetHandType.Either)
-                {
-                    chainStartEither = false;
-                }
-                else if (cue.handType == Target.TargetHandType.Right)
-                {
-                    chainStartRight = false;
-                }
-                else if (cue.handType == Target.TargetHandType.Left)
-                {
-                    chainStartLeft = false;
-                }
-                else if (cue.handType == Target.TargetHandType.None)
-                {
-                    chainStartNone = false;
-                }
-            }
+            var i = HarmonyInstance.Create("SkyRotation");
+            Hooks.ApplyHooks(i);
         }
 
         public override void OnUpdate()
@@ -210,47 +71,5 @@ namespace ChainFixer
                 oldMenuState = menuState;
             }
         }
-
-        /*
-        public override void OnLevelWasLoaded(int level)
-        {
-            MelonModLogger.Log("OnLevelWasLoaded: " + level.ToString());
-        }
-
-        public override void OnLevelWasInitialized(int level)
-        {
-            MelonModLogger.Log("OnLevelWasInitialized: " + level.ToString());
-        }
-
-        public override void OnFixedUpdate()
-        {
-            MelonModLogger.Log("OnFixedUpdate");
-        }
-
-        public override void OnLateUpdate()
-        {
-            MelonModLogger.Log("OnLateUpdate");
-        }
-
-        public override void OnGUI()
-        {
-            MelonModLogger.Log("OnGUI");
-        }
-
-        public override void OnApplicationQuit()
-        {
-            MelonModLogger.Log("OnApplicationQuit");
-        }
-
-        public override void OnModSettingsApplied()
-        {
-            MelonModLogger.Log("OnModSettingsApplied");
-        }
-
-        public override void VRChat_OnUiManagerInit() // Only works in VRChat
-        {
-            MelonModLogger.Log("VRChat_OnUiManagerInit");
-        }
-        */
     }
 }
